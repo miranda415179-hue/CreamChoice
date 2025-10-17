@@ -70,4 +70,5 @@ Somos una heladería artesanal que combina sabor, salud y responsabilidad social
 
 **"Cada helado puede alimentar esperanzas alrededor del mundo"** 🌍
 
+
 </div>
