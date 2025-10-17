@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cream Choice Traditional - Helados a base de Yogurt Griego</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#F5F5DC',
+                        strawberry: '#FF6B9D',
+                        chocolate: '#8B4513',
+                        passion: '#FFA500',
+                        lucuma: '#FFD700',
+                        blueberry: '#6A5ACD',
+                        pineapple: '#FFD700',
+                        elegant: '#2C2C2C'
+                    },
+                    fontFamily: {
+                        'display': ['Poppins', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #F5F5DC 0%, #FFFFFF 50%, #F9F9F9 100%);
+            font-family: 'Inter', sans-serif;
+        }
+        .card-elegant {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card-elegant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FF6B9D, #FFA500, #FFD700, #6A5ACD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .ice-cream-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ice-cream-card:hover {
+            transform: scale(1.02);
+        }
+        .pulse-gentle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .chat-bot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .chat-window {
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .message.bot {
+            background: linear-gradient(45deg, #FF6B9D, #FFA500);
+            color: white;
+            align-self: flex-start;
+        }
+        .message.user {
+            background: #f3f4f6;
+            color: #2C2C2C;
+            align-self: flex-end;
+        }
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .typing {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 18px;
+            align-self: flex-start;
+            max-width: 80%;
+        }
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        .voice-btn {
+            transition: all 0.3s ease;
+        }
+        .voice-btn.recording {
+            background: linear-gradient(45deg, #ff4444, #ff6b6b);
+            animation: pulse 1.5s infinite;
+        }
+        .quick-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .quick-option {
+            background: linear-gradient(45deg, #FF6B9D, #FFA500);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .quick-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        #chat-bubble {
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-lg border-b border-cream/30 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="text-6xl">🍦</div>
+                    <div>
+                        <h1 class="text-3xl font-display font-bold text-elegant">Cream Choice</h1>
+                        <p class="text-sm text-gray-600 font-medium">TRADITIONAL</p>
+                        <p class="text-xs text-gray-500">Helados a base de yogurt griego</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="https://www.instagram.com/_creamchoice" target="_blank" 
+                       class="bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-medium px-4 py-2 rounded-full transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <span>📸</span>
+                        <span>@_creamchoice</span>
+                    </a>
+                    <button onclick="toggleCart()" 
+                            class="bg-elegant hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-full transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+                        <span>🛒</span>
+                        <span>Carrito (<span id="cart-count">0</span>)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Información de la empresa -->
+    <div id="company-info">
+        <div class="bg-gradient-to-r from-strawberry via-passion to-blueberry text-white">
+            <div class="max-w-7xl mx-auto px-6 py-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-display font-bold mb-4">¡Hola! Somos Cream Choice 👋</h2>
+                    <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                        Una heladería que nació del amor por lo natural y lo delicioso
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="glass-effect rounded-2xl p-8">
+                        <div class="text-4xl mb-4">🎯</div>
+                        <h3 class="text-xl font-display font-semibold mb-4">Nuestra Misión</h3>
+                        <p class="opacity-90 leading-relaxed">
+                            Crear helados artesanales a base de yogurt griego que sean deliciosos, 
+                            saludables y accesibles para toda la familia.
+                        </p>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-8">
+                        <div class="text-4xl mb-4">🌟</div>
+                        <h3 class="text-xl font-display font-semibold mb-4">Nuestra Visión</h3>
+                        <p class="opacity-90 leading-relaxed">
+                            Ser la heladería favorita de Lima, demostrando que lo saludable 
+                            también puede ser súper rico y divertido.
+                        </p>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-8">
+                        <div class="text-4xl mb-4">💚</div>
+                        <h3 class="text-xl font-display font-semibold mb-4">Nuestros Valores</h3>
+                        <ul class="opacity-90 space-y-2 text-left">
+                            <li>🥛 Yogurt griego de calidad</li>
+                            <li>🍓 Frutas naturales frescas</li>
+                            <li>🥄 Utensilios biodegradables</li>
+                            <li>💰 Precios justos</li>
+                            <li>😊 Servicio con amor</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-16 text-center glass-effect rounded-2xl p-12">
+                    <div class="text-5xl mb-6">🌍</div>
+                    <h2 class="text-3xl font-display font-bold mb-6">Cuidamos el Planeta y Ayudamos al Mundo</h2>
+                    <p class="text-lg opacity-90 max-w-4xl mx-auto leading-relaxed mb-8">
+                        Cada helado viene con <strong>vasos y cucharadas 100% biodegradables</strong>. Porque creemos que 
+                        disfrutar algo delicioso no debe dañar nuestro hogar. ¡El planeta y tu paladar 
+                        te lo agradecerán! 🥄🌱
+                    </p>
+                    
+                    <!-- Programa Trae tu Cuchara -->
+                    <div class="bg-gradient-to-r from-blue-100/50 to-green-100/50 rounded-2xl p-8 mt-8 border border-blue-200/50">
+                        <div class="flex items-center justify-center space-x-3 mb-4">
+                            <div class="text-4xl">🍽️</div>
+                            <h3 class="text-2xl font-display font-bold text-blue-800">Programa "Trae tu Cuchara"</h3>
+                            <div class="text-4xl">💫</div>
+                        </div>
+                        <p class="text-lg text-blue-800 opacity-90 max-w-3xl mx-auto leading-relaxed mb-6">
+                            ¿Traes tu propia cuchara eco-friendly (metal, madera, bambú, cerámica)? ¡Perfecto! 
+                            <strong>No aceptamos cucharas de plástico.</strong> No solo evitas el uso de cucharas biodegradables, 
+                            sino que además <strong>donamos el 35% del costo de tu helado al World Food Programme</strong> 
+                            para alimentar personas necesitadas alrededor del mundo.
+                        </p>
+                        <div class="grid md:grid-cols-3 gap-6 text-center">
+                            <div class="bg-white/70 rounded-xl p-4">
+                                <div class="text-3xl mb-2">🌱</div>
+                                <h4 class="font-bold text-green-700 mb-2">Cuidas el Planeta</h4>
+                                <p class="text-sm text-green-600">Reduces el uso de utensilios desechables</p>
+                            </div>
+                            <div class="bg-white/70 rounded-xl p-4">
+                                <div class="text-3xl mb-2">💝</div>
+                                <h4 class="font-bold text-pink-700 mb-2">Alimentas Esperanzas</h4>
+                                <p class="text-sm text-pink-600">Ayudas a combatir el hambre mundial</p>
+                            </div>
+                            <div class="bg-white/70 rounded-xl p-4">
+                                <div class="text-3xl mb-2">🌎</div>
+                                <h4 class="font-bold text-blue-700 mb-2">Haces la Diferencia</h4>
+                                <p class="text-sm text-blue-600">Tu helado tiene un impacto social positivo</p>
+                            </div>
+                        </div>
+                        <a href="https://www.wfp.org/support-us" target="_blank" 
+                           class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full transition-colors font-medium">
+                            Conoce más sobre el World Food Programme →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Constructor de helados -->
+            <div class="lg:col-span-3">
+                <div class="space-y-12">
+                    <!-- Título principal -->
+                    <div class="text-center">
+                        <h2 class="text-4xl font-display font-bold gradient-text mb-4">
+                            ¡Arma tu helado perfecto!
+                        </h2>
+                        <p class="text-gray-600 text-lg">
+                            Sigue estos pasitos y crea la combinación que más te guste 😋
+                        </p>
+                    </div>
+
+                    <!-- Paso 1: Cantidad de bolas -->
+                    <div class="card-elegant rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-8 h-8 bg-gradient-to-r from-strawberry to-passion rounded-full flex items-center justify-center text-white font-bold">1</div>
+                            <h3 class="text-2xl font-display font-semibold text-elegant">¿Cuántas bolitas quieres?</h3>
+                            <div class="text-2xl">🍦</div>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4" id="scoops-options">
+                            <!-- Las opciones de bolas se cargarán aquí -->
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Seleccionar sabores -->
+                    <div id="flavors-selection" class="card-elegant rounded-2xl p-8 hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-8 h-8 bg-gradient-to-r from-passion to-lucuma rounded-full flex items-center justify-center text-white font-bold">2</div>
+                            <h3 class="text-2xl font-display font-semibold text-elegant">¡Elige tus sabores favoritos!</h3>
+                            <div class="text-2xl">🎨</div>
+                        </div>
+                        <p class="text-gray-600 mb-6" id="flavor-instruction">
+                            <!-- Instrucción dinámica según cantidad de bolas -->
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6" id="flavors-options">
+                            <!-- Los sabores se cargarán aquí -->
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Seleccionar tamaño -->
+                    <div id="size-selection" class="card-elegant rounded-2xl p-8 hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-8 h-8 bg-gradient-to-r from-lucuma to-blueberry rounded-full flex items-center justify-center text-white font-bold">3</div>
+                            <h3 class="text-2xl font-display font-semibold text-elegant">¿Qué tamaño prefieres?</h3>
+                            <div class="text-2xl">🥄</div>
+                        </div>
+                        <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8" id="size-options">
+                            <!-- Los tamaños se cargarán aquí -->
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl text-center border border-green-200">
+                            <div class="text-3xl mb-2">🌱</div>
+                            <p class="text-green-800 font-medium">
+                                ¡Vaso y cucharada 100% biodegradables incluidos!
+                            </p>
+                            <p class="text-green-600 text-sm mt-1">
+                                Sin costo extra - Cuidamos el planeta con cada helado
+                            </p>
+                        </div>
+                        
+                        <!-- Opción de cuchara propia -->
+                        <div class="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-200">
+                            <div class="flex items-center justify-center space-x-3 mb-4">
+                                <div class="text-3xl">🌍</div>
+                                <h4 class="text-xl font-bold text-blue-800">Programa "Trae tu Cuchara"</h4>
+                                <div class="text-3xl">✨</div>
+                            </div>
+                            <div class="text-center">
+                                <label class="flex items-center justify-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" id="bring-own-spoon" class="w-5 h-5 text-blue-600 rounded" onchange="toggleOwnSpoon()">
+                                    <span class="text-blue-800 font-medium">Traigo mi propia cuchara eco-friendly (metal, madera, bambú, cerámica)</span>
+                                </label>
+                                <p class="text-xs text-red-600 mt-1 font-medium">❌ No aceptamos cucharas de plástico</p>
+                                <div class="mt-3 text-sm text-blue-700">
+                                    🍽️ <strong>Beneficios:</strong> No recibirás cuchara biodegradable (vaso sí incluido)<br>
+                                    💰 <strong>Impacto:</strong> 35% del costo va a <strong>World Food Programme</strong><br>
+                                    🌎 <strong>Resultado:</strong> ¡Ayudas a alimentar personas necesitadas!
+                                </div>
+                                <a href="https://www.wfp.org/support-us" target="_blank" 
+                                   class="inline-block mt-2 text-xs text-blue-600 hover:text-blue-800 underline">
+                                    Conoce más sobre el World Food Programme →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Toppings -->
+                    <div id="toppings-selection" class="card-elegant rounded-2xl p-8 hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-8 h-8 bg-gradient-to-r from-blueberry to-strawberry rounded-full flex items-center justify-center text-white font-bold">4</div>
+                            <h3 class="text-2xl font-display font-semibold text-elegant">¿Quieres agregar algo extra?</h3>
+                            <div class="text-2xl">✨</div>
+                        </div>
+                        <p class="text-gray-600 mb-8">¡Los toppings son opcionales! Pero hacen tu helado aún más especial 😍</p>
+                        <div id="toppings-container">
+                            <!-- Los toppings se cargarán aquí -->
+                        </div>
+                    </div>
+
+                    <!-- Paso 5: Finalizar -->
+                    <div id="checkout-section" class="card-elegant rounded-2xl p-8 hidden">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-8 h-8 bg-gradient-to-r from-strawberry to-blueberry rounded-full flex items-center justify-center text-white font-bold">5</div>
+                            <h3 class="text-2xl font-display font-semibold text-elegant">¡Casi listo!</h3>
+                            <div class="text-2xl">🎉</div>
+                        </div>
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-lg font-semibold text-elegant mb-4">Cantidad y total:</h4>
+                                <div class="flex items-center justify-center space-x-6 mb-8">
+                                    <button onclick="changeQuantity(-1)" 
+                                            class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold">
+                                        −
+                                    </button>
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-elegant" id="quantity">1</div>
+                                        <div class="text-gray-500 text-sm">unidades</div>
+                                    </div>
+                                    <button onclick="changeQuantity(1)" 
+                                            class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold">
+                                        +
+                                    </button>
+                                </div>
+                                
+                                <div class="bg-gradient-to-r from-strawberry to-blueberry text-white p-8 rounded-2xl text-center mb-6">
+                                    <p class="text-lg mb-2 opacity-90">Total a pagar:</p>
+                                    <p class="text-5xl font-bold" id="total-price">S/ 0.00</p>
+                                </div>
+
+                                <button onclick="addToCart()" 
+                                        class="w-full bg-gradient-to-r from-elegant to-gray-700 hover:from-gray-800 hover:to-gray-900 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg">
+                                    🛒 ¡Agregar al carrito!
+                                </button>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-elegant mb-4">Información nutricional:</h4>
+                                <div class="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-2xl border border-green-200">
+                                    <div id="nutrition-info" class="grid grid-cols-2 gap-4 text-sm">
+                                        <!-- Info nutricional se carga aquí -->
+                                    </div>
+                                    <div class="mt-6 pt-4 border-t border-green-200 text-center">
+                                        <p class="text-green-700 font-medium">
+                                            💚 A base de yogurt griego natural
+                                        </p>
+                                        <p class="text-xs text-green-600 mt-1">
+                                            Valores para <span id="nutrition-quantity">1</span> unidad(es)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado inicial -->
+                    <div id="initial-state" class="text-center py-16">
+                        <div class="text-8xl mb-6 pulse-gentle">🍦</div>
+                        <h3 class="text-2xl font-display font-semibold text-elegant mb-4">
+                            ¡Empecemos por el primer paso!
+                        </h3>
+                        <p class="text-gray-600 text-lg">
+                            Dime cuántas bolitas quieres y armamos tu helado ideal 😊
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrito -->
+            <div class="lg:block">
+                <div class="sticky top-24">
+                    <div class="card-elegant rounded-2xl p-6" id="cart-container">
+                        <div class="text-center py-12">
+                            <div class="text-6xl mb-4">🛒</div>
+                            <h3 class="text-xl font-semibold text-elegant mb-2">Tu carrito está vacío</h3>
+                            <p class="text-gray-500">¡Crea tu helado perfecto y aparecerá aquí!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-elegant via-gray-800 to-elegant text-white py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="text-6xl mb-6">🍦</div>
+            <h3 class="text-3xl font-display font-bold mb-4">Cream Choice</h3>
+            <p class="text-xl opacity-90 mb-2">TRADITIONAL</p>
+            <p class="text-gray-300 mb-8">Helados artesanales a base de yogurt griego</p>
+            
+            <div class="flex justify-center space-x-8 text-sm text-gray-300 flex-wrap gap-4 mb-12">
+                <div class="flex items-center space-x-2">
+                    <span>🥛</span>
+                    <span>Yogurt griego natural</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span>🍓</span>
+                    <span>Frutas frescas</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span>🌱</span>
+                    <span>Eco-friendly</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span>💰</span>
+                    <span>Precios justos</span>
+                </div>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <h4 class="text-xl font-semibold mb-4">💳 Métodos de pago</h4>
+                <div class="flex justify-center space-x-6 flex-wrap gap-4">
+                    <div class="flex items-center space-x-2">
+                        <span>💳</span>
+                        <span>Tarjetas</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span>📱</span>
+                        <span>Yape</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span>💸</span>
+                        <span>Plin</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span>💰</span>
+                        <span>Efectivo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-2xl font-display font-bold gradient-text">
+                ¡Gracias por elegir Cream Choice, tu opción deliciosa y saludable! 💚
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat Bot -->
+    <div class="chat-bot">
+        <!-- Globo de consulta -->
+        <div id="chat-bubble" class="absolute bottom-20 right-0 bg-white rounded-2xl shadow-lg border border-gray-200 p-4 w-64 transform translate-x-0 transition-all duration-300">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-3">
+                    <div class="text-2xl">🤖</div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-700 font-medium mb-1">¡Hola! 👋</p>
+                        <p class="text-xs text-gray-600">¿Tienes alguna consulta sobre nuestros helados o el programa de donaciones?</p>
+                    </div>
+                </div>
+                <button onclick="closeChatBubble()" class="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+            </div>
+            <div class="mt-3 flex space-x-2">
+                <button onclick="openChatFromBubble()" class="bg-gradient-to-r from-strawberry to-blueberry text-white px-3 py-1 rounded-full text-xs font-medium hover:shadow-md transition-all">
+                    Sí, tengo preguntas
+                </button>
+                <button onclick="closeChatBubble()" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs hover:bg-gray-200 transition-all">
+                    Ahora no
+                </button>
+            </div>
+            <!-- Flecha del globo -->
+            <div class="absolute bottom-[-8px] right-6 w-4 h-4 bg-white border-r border-b border-gray-200 transform rotate-45"></div>
+        </div>
+        
+        <!-- Botón para abrir el chat -->
+        <button id="chat-toggle" onclick="toggleChat()" 
+                class="w-16 h-16 bg-gradient-to-r from-strawberry to-blueberry hover:from-pink-600 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center transform hover:scale-110">
+            <span class="text-2xl">🤖</span>
+        </button>
+        
+        <!-- Ventana del chat -->
+        <div id="chat-window" class="chat-window">
+            <!-- Header del chat -->
+            <div class="bg-gradient-to-r from-strawberry to-blueberry text-white p-4 rounded-t-2xl flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="text-2xl">🤖</div>
+                    <div>
+                        <h3 class="font-semibold">Asistente Cream Choice</h3>
+                        <p class="text-xs opacity-90">¡Hola! ¿En qué puedo ayudarte?</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                    ✕
+                </button>
+            </div>
+            
+            <!-- Mensajes -->
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot">
+                    ¡Hola! 😊 Soy el asistente virtual de Cream Choice. ¡Estoy aquí para ayudarte! Puedo:
+                    <br>• Explicarte nuestros deliciosos sabores
+                    <br>• Ayudarte a elegir tu helado perfecto
+                    <br>• Contarte sobre nuestros precios y opciones
+                    <br>• Resolver cualquier duda sobre Cream Choice
+                    <br><br>¿En qué puedo ayudarte hoy?
+                    <div class="quick-options">
+                                    <button class="quick-option" onclick="sendQuickMessage('¿Qué sabores tienen disponibles?')">Ver sabores</button>
+                                    <button class="quick-option" onclick="sendQuickMessage('¿Cuáles son sus precios?')">Precios</button>
+                                    <button class="quick-option" onclick="sendQuickMessage('¿Qué toppings ofrecen?')">Toppings</button>
+                                    <button class="quick-option" onclick="sendQuickMessage('Cuéntame sobre las donaciones')">Donaciones</button>
+                                    <button class="quick-option" onclick="sendQuickMessage('Ayúdame a elegir un sabor')">Ayúdame a elegir</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Indicador de escritura -->
+            <div id="typing-indicator" class="typing">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span class="text-xs text-gray-500">Escribiendo...</span>
+            </div>
+            
+            <!-- Input del chat -->
+            <div class="chat-input">
+                <div class="flex space-x-2">
+                    <button id="voiceBtn" onclick="toggleVoice()" 
+                            class="voice-btn bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white px-4 py-3 rounded-full transition-all duration-300 text-xl">
+                        🎤
+                    </button>
+                    <input type="text" id="chat-input" placeholder="Escribe tu mensaje o habla..." 
+                           class="flex-1 px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:border-strawberry transition-colors"
+                           onkeypress="handleChatKeypress(event)">
+                    <button onclick="sendMessage()" 
+                            class="bg-gradient-to-r from-strawberry to-blueberry hover:from-pink-600 hover:to-purple-700 text-white px-6 py-3 rounded-full transition-all duration-300 font-medium">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de la aplicación
+        const iceCreams = [
+            {
+                id: '1',
+                name: 'Fresa Natural',
+                description: 'Cremoso yogurt griego con trozos de fresa fresca',
+                color: 'strawberry',
+                bgColor: 'from-pink-100 to-red-100',
+                borderColor: 'border-strawberry',
+                basePrices: { small: 4.50, medium: 8.50, large: 12.00, 'half-liter': 35.00, 'full-liter': 65.00 },
+                image: '🍓',
+                category: 'natural',
+                nutritionalInfo: {
+                    small: { calories: 120, protein: 8, carbs: 18, fat: 3, sugar: 14, fiber: 2 },
+                    medium: { calories: 160, protein: 11, carbs: 24, fat: 4, sugar: 18, fiber: 3 },
+                    large: { calories: 200, protein: 14, carbs: 30, fat: 5, sugar: 22, fiber: 4 }
+                }
+            },
+            {
+                id: '2',
+                name: 'Chocolate Artesanal',
+                description: 'Yogurt griego con cacao orgánico y toques de chocolate',
+                color: 'chocolate',
+                bgColor: 'from-amber-100 to-orange-100',
+                borderColor: 'border-chocolate',
+                basePrices: { small: 4.50, medium: 8.50, large: 12.00, 'half-liter': 35.00, 'full-liter': 65.00 },
+                image: '🍫',
+                category: 'natural',
+                nutritionalInfo: {
+                    small: { calories: 140, protein: 9, carbs: 20, fat: 4, sugar: 16, fiber: 2 },
+                    medium: { calories: 187, protein: 12, carbs: 27, fat: 5, sugar: 21, fiber: 3 },
+                    large: { calories: 233, protein: 15, carbs: 34, fat: 6, sugar: 26, fiber: 4 }
+                }
+            },
+            {
+                id: '3',
+                name: 'Maracuyá Tropical',
+                description: 'Yogurt griego con pulpa de maracuyá fresca y natural',
+                color: 'passion',
+                bgColor: 'from-orange-100 to-yellow-100',
+                borderColor: 'border-passion',
+                basePrices: { small: 4.50, medium: 8.50, large: 12.00, 'half-liter': 35.00, 'full-liter': 65.00 },
+                image: '🧡',
+                category: 'natural',
+                nutritionalInfo: {
+                    small: { calories: 115, protein: 7, carbs: 17, fat: 3, sugar: 13, fiber: 2 },
+                    medium: { calories: 153, protein: 9, carbs: 23, fat: 4, sugar: 17, fiber: 3 },
+                    large: { calories: 192, protein: 12, carbs: 28, fat: 5, sugar: 21, fiber: 4 }
+                }
+            },
+            {
+                id: '4',
+                name: 'Lúcuma Tradicional',
+                description: 'Yogurt griego con lúcuma peruana, sabor único y tradicional',
+                color: 'lucuma',
+                bgColor: 'from-yellow-100 to-amber-100',
+                borderColor: 'border-lucuma',
+                basePrices: { small: 4.50, medium: 8.50, large: 12.00, 'half-liter': 35.00, 'full-liter': 65.00 },
+                image: '💛',
+                category: 'natural',
+                nutritionalInfo: {
+                    small: { calories: 130, protein: 8, carbs: 19, fat: 3, sugar: 15, fiber: 3 },
+                    medium: { calories: 173, protein: 11, carbs: 25, fat: 4, sugar: 20, fiber: 4 },
+                    large: { calories: 217, protein: 14, carbs: 32, fat: 5, sugar: 25, fiber: 5 }
+                }
+            },
+            {
+                id: '5',
+                name: 'Arándano Antioxidante',
+                description: 'Yogurt griego con arándanos frescos, rico en antioxidantes',
+                color: 'blueberry',
+                bgColor: 'from-purple-100 to-blue-100',
+                borderColor: 'border-blueberry',
+                basePrices: { small: 4.50, medium: 8.50, large: 12.00, 'half-liter': 35.00, 'full-liter': 65.00 },
+                image: '💜',
+                category: 'natural',
+                nutritionalInfo: {
+                    small: { calories: 125, protein: 8, carbs: 18, fat: 3, sugar: 14, fiber: 3 },
+                    medium: { calories: 167, protein: 11, carbs: 24, fat: 4, sugar: 18, fiber: 4 },
+                    large: { calories: 208, protein: 14, carbs: 30, fat: 5, sugar: 23, fiber: 5 }
+                }
+            }
+        ];
+
+        const toppings = [
+            { id: 't1', name: 'Fresa en trozos', price: 1.50, category: 'frutas', image: '🍓', nutrition: { calories: 15, carbs: 4, fiber: 1, sugar: 3 } },
+            { id: 't3', name: 'Arándanos frescos', price: 2.00, category: 'frutas', image: '🫐', nutrition: { calories: 20, carbs: 5, fiber: 2, sugar: 3 } },
+            { id: 't4', name: 'Almendras picadas', price: 2.50, category: 'frutos-secos', image: '🥜', nutrition: { calories: 50, protein: 2, fat: 4, carbs: 2 } },
+            { id: 't5', name: 'Chispas de chocolate', price: 1.00, category: 'dulces', image: '🍫', nutrition: { calories: 35, carbs: 5, fat: 2, sugar: 4 } },
+            { id: 't6', name: 'Granola artesanal', price: 1.75, category: 'saludables', image: '🥣', nutrition: { calories: 40, protein: 2, carbs: 6, fat: 1, fiber: 2 } },
+            { id: 't7', name: 'Miel de abeja', price: 1.50, category: 'saludables', image: '🍯', nutrition: { calories: 25, carbs: 7, sugar: 6 } },
+            { id: 't8', name: 'Semillas de chía', price: 2.00, category: 'saludables', image: '🌱', nutrition: { calories: 25, protein: 2, fat: 2, fiber: 3 } }
+        ];
+
+        // Estado de la aplicación
+        let selectedScoops = 0;
+        let selectedFlavors = [];
+        let selectedSize = '';
+        let selectedToppings = [];
+        let quantity = 1;
+        let cart = [];
+        let bringOwnSpoon = false;
+
+        // Funciones principales
+        function loadScoops() {
+            const container = document.getElementById('scoops-options');
+            const options = [
+                { count: 1, emoji: '🍦', name: '1 Bolita', desc: 'Perfecta para probar' },
+                { count: 2, emoji: '🍦🍦', name: '2 Bolitas', desc: 'La opción más popular' },
+                { count: 3, emoji: '🍦🍦🍦', name: '3 Bolitas', desc: 'Para los más golosos' }
+            ];
+
+            container.innerHTML = options.map(option => `
+                <div class="ice-cream-card p-6 rounded-xl border-2 border-gray-200 hover:border-strawberry cursor-pointer transition-all text-center bg-gradient-to-br from-cream/30 to-white"
+                     onclick="selectScoops(${option.count})">
+                    <div class="text-4xl mb-3">${option.emoji}</div>
+                    <h4 class="font-semibold text-elegant text-lg mb-2">${option.name}</h4>
+                    <p class="text-gray-600 text-sm">${option.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function selectScoops(count) {
+            selectedScoops = count;
+            selectedFlavors = [];
+            
+            // Highlight selected
+            document.querySelectorAll('#scoops-options > div').forEach(div => {
+                div.className = div.className.replace('border-strawberry bg-strawberry/10', 'border-gray-200');
+            });
+            event.target.closest('div').className = event.target.closest('div').className.replace('border-gray-200', 'border-strawberry bg-strawberry/10');
+            
+            // Show flavors selection
+            document.getElementById('flavors-selection').classList.remove('hidden');
+            document.getElementById('initial-state').classList.add('hidden');
+            loadFlavors();
+        }
+
+        function loadFlavors() {
+            const container = document.getElementById('flavors-options');
+            const instruction = document.getElementById('flavor-instruction');
+            
+            if (selectedScoops === 1) {
+                instruction.textContent = 'Elige 1 sabor para tu helado:';
+            } else {
+                instruction.textContent = `Elige hasta ${selectedScoops} sabores diferentes (puedes repetir si quieres):`;
+            }
+
+            container.innerHTML = iceCreams.map(iceCream => {
+                const imageElement = iceCream.image.includes('.jpg') 
+                    ? `<img src="${iceCream.image}" alt="${iceCream.name}" class="w-20 h-20 object-cover rounded-xl shadow-md" />` 
+                    : `<div class="text-5xl">${iceCream.image}</div>`;
+                
+                return `
+                    <div class="ice-cream-card p-6 rounded-xl border-2 border-gray-200 hover:border-${iceCream.color} cursor-pointer transition-all bg-gradient-to-br ${iceCream.bgColor}"
+                         onclick="selectFlavor('${iceCream.id}')">
+                        <div class="flex items-center space-x-4">
+                            ${imageElement}
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-elegant text-lg">${iceCream.name}</h4>
+                                <p class="text-gray-600 text-sm mt-1">${iceCream.description}</p>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-lg font-bold text-${iceCream.color}">
+                                        A base de yogurt griego
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectFlavor(flavorId) {
+            const flavor = iceCreams.find(ice => ice.id === flavorId);
+            
+            // Determinar límite de sabores según el tamaño seleccionado
+            let maxFlavors = selectedScoops;
+            if (selectedSize === 'half-liter') maxFlavors = 3;
+            if (selectedSize === 'full-liter') maxFlavors = 5;
+            
+            if (selectedFlavors.length < maxFlavors) {
+                selectedFlavors.push(flavor);
+            } else if (maxFlavors === 1) {
+                selectedFlavors = [flavor];
+            } else {
+                return; // No agregar más sabores si ya está lleno
+            }
+
+            // Para tamaños normales, mostrar selección de tamaño cuando se completen las bolas
+            if (selectedFlavors.length === selectedScoops && !selectedSize) {
+                document.getElementById('size-selection').classList.remove('hidden');
+                loadSizes();
+            }
+            
+            // Para contenedores grandes, continuar con el flujo si ya se seleccionó el tamaño
+            if (selectedSize === 'half-liter' || selectedSize === 'full-liter') {
+                if (selectedFlavors.length >= 2) { // Mínimo 2 sabores para contenedores grandes
+                    document.getElementById('toppings-selection').classList.remove('hidden');
+                    loadToppings();
+                    document.getElementById('checkout-section').classList.remove('hidden');
+                    updateTotal();
+                    updateNutrition();
+                }
+            }
+
+            updateFlavorDisplay();
+        }
+
+        function updateFlavorDisplay() {
+            // Actualizar visual de sabores seleccionados
+            const instruction = document.getElementById('flavor-instruction');
+            if (selectedFlavors.length > 0) {
+                const flavorNames = selectedFlavors.map(f => f.name).join(', ');
+                instruction.innerHTML = `<strong>Seleccionados:</strong> ${flavorNames} (${selectedFlavors.length}/${selectedScoops})`;
+            }
+        }
+
+        function loadSizes() {
+            const container = document.getElementById('size-options');
+            const sizes = [
+                { key: 'small', name: 'Vasito', emoji: '🥄', desc: 'Perfecto para una merienda' },
+                { key: 'medium', name: 'Vaso', emoji: '🥤', desc: 'El tamaño ideal' },
+                { key: 'large', name: 'Vaso Grande', emoji: '🥣', desc: 'Para compartir o disfrutar mucho' },
+                { key: 'half-liter', name: 'Medio Litro', emoji: '🍨', desc: 'Para llevar a casa, múltiples sabores' },
+                { key: 'full-liter', name: 'Un Litro', emoji: '🎂', desc: 'Para toda la familia, múltiples sabores' }
+            ];
+            
+            container.innerHTML = sizes.map(size => {
+                const sizePrices = { 
+                    small: 2.50, 
+                    medium: 3.50, 
+                    large: 4.50, 
+                    'half-liter': 15.00, 
+                    'full-liter': 28.00 
+                };
+                let price, calories;
+                
+                if (size.key === 'half-liter' || size.key === 'full-liter') {
+                    // Para contenedores grandes, precio fijo independiente de bolas
+                    price = sizePrices[size.key];
+                    calories = size.key === 'half-liter' ? 400 : 750;
+                } else {
+                    // Para tamaños normales, precio por cantidad de bolas
+                    price = sizePrices[size.key] * selectedScoops;
+                    calories = selectedFlavors.length > 0 ? selectedFlavors[0].nutritionalInfo[size.key].calories * selectedScoops : 0;
+                }
+                
+                return `
+                    <div class="ice-cream-card p-6 rounded-xl border-2 border-gray-200 hover:border-elegant cursor-pointer transition-all text-center bg-gradient-to-br from-cream/30 to-white"
+                         onclick="selectSize('${size.key}')">
+                        <div class="text-4xl mb-3">${size.emoji}</div>
+                        <h4 class="font-semibold text-elegant text-lg mb-1">${size.name}</h4>
+                        <p class="text-2xl font-bold text-elegant mb-2">S/ ${price.toFixed(2)}</p>
+                        <p class="text-xs text-gray-500">${calories} calorías aprox.</p>
+                        <p class="text-sm text-gray-600 mt-2">${size.desc}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectSize(size) {
+            selectedSize = size;
+            
+            // Highlight selected
+            document.querySelectorAll('#size-options > div').forEach(div => {
+                div.className = div.className.replace('border-elegant bg-elegant/10', 'border-gray-200');
+            });
+            event.target.closest('div').className = event.target.closest('div').className.replace('border-gray-200', 'border-elegant bg-elegant/10');
+            
+            // Para contenedores grandes, permitir elegir más sabores
+            if (size === 'half-liter' || size === 'full-liter') {
+                const maxFlavors = size === 'half-liter' ? 3 : 5;
+                if (selectedFlavors.length < maxFlavors) {
+                    // Mostrar mensaje para elegir más sabores
+                    const instruction = document.getElementById('flavor-instruction');
+                    instruction.innerHTML = `<strong>🍨 ${size === 'half-liter' ? 'Medio Litro' : 'Un Litro'} seleccionado!</strong><br>Puedes elegir hasta ${maxFlavors} sabores diferentes. Actualmente tienes: ${selectedFlavors.length}/${maxFlavors}`;
+                    
+                    // Volver a mostrar selección de sabores
+                    document.getElementById('flavors-selection').scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+            }
+            
+            // Show toppings selection
+            document.getElementById('toppings-selection').classList.remove('hidden');
+            loadToppings();
+            
+            // Show checkout section
+            document.getElementById('checkout-section').classList.remove('hidden');
+            updateTotal();
+            updateNutrition();
+        }
+
+        function loadToppings() {
+            const container = document.getElementById('toppings-container');
+            const categories = [
+                { key: 'frutas', name: '🍓 Frutas Frescas', color: 'strawberry' },
+                { key: 'frutos-secos', name: '🥜 Frutos Secos', color: 'chocolate' },
+                { key: 'dulces', name: '🍭 Dulces', color: 'passion' },
+                { key: 'saludables', name: '🌱 Saludables', color: 'blueberry' }
+            ];
+            
+            container.innerHTML = categories.map(category => {
+                const categoryToppings = toppings.filter(t => t.category === category.key);
+                if (categoryToppings.length === 0) return '';
+                
+                return `
+                    <div class="mb-8">
+                        <h4 class="text-lg font-semibold text-${category.color} mb-4 flex items-center space-x-2">
+                            <span>${category.name}</span>
+                        </h4>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${categoryToppings.map(topping => {
+                                const isSelected = selectedToppings.some(t => t.id === topping.id);
+                                return `
+                                    <div class="p-4 rounded-lg border cursor-pointer transition-all ${isSelected ? `border-${category.color} bg-${category.color}/10` : 'border-gray-200 hover:border-' + category.color + '/50'}"
+                                         onclick="toggleTopping('${topping.id}')">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="text-2xl">${topping.image}</span>
+                                                <div>
+                                                    <h5 class="font-medium text-elegant">${topping.name}</h5>
+                                                    <p class="text-sm text-${category.color}">+S/ ${topping.price.toFixed(2)}</p>
+                                                </div>
+                                            </div>
+                                            ${isSelected ? `<div class="w-6 h-6 bg-${category.color} rounded-full flex items-center justify-center"><span class="text-white text-xs">✓</span></div>` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleTopping(id) {
+            const topping = toppings.find(t => t.id === id);
+            const index = selectedToppings.findIndex(t => t.id === id);
+            
+            if (index > -1) {
+                selectedToppings.splice(index, 1);
+            } else {
+                selectedToppings.push(topping);
+            }
+            
+            loadToppings();
+            updateTotal();
+            updateNutrition();
+        }
+
+        function changeQuantity(change) {
+            quantity = Math.max(1, quantity + change);
+            document.getElementById('quantity').textContent = quantity;
+            document.getElementById('nutrition-quantity').textContent = quantity;
+            updateTotal();
+            updateNutrition();
+        }
+
+        function calculateBaseTotal() {
+            if (selectedFlavors.length === 0 || !selectedSize) return 0;
+            
+            const sizePrices = { 
+                small: 4.50, 
+                medium: 8.50, 
+                large: 12.00, 
+                'half-liter': 35.00, 
+                'full-liter': 65.00 
+            };
+
+
+            
+            let basePrice;
+            if (selectedSize === 'half-liter' || selectedSize === 'full-liter') {
+                basePrice = sizePrices[selectedSize];
+            } else {
+                basePrice = sizePrices[selectedSize] * selectedScoops;
+            }
+            
+            const toppingsPrice = selectedToppings.reduce((sum, topping) => sum + topping.price, 0);
+            return (basePrice + toppingsPrice) * quantity;
+        }
+        
+        function updateTotal() {
+            const total = calculateBaseTotal();
+            if (total === 0) return;
+            
+            document.getElementById('total-price').textContent = `S/ ${total.toFixed(2)}`;
+            updateDonationMessage();
+        }
+
+        function updateNutrition() {
+            if (selectedFlavors.length === 0 || !selectedSize) return;
+            
+            const baseNutrition = selectedFlavors.reduce((acc, flavor) => {
+                const nutrition = flavor.nutritionalInfo[selectedSize];
+                return {
+                    calories: acc.calories + nutrition.calories,
+                    protein: acc.protein + nutrition.protein,
+                    carbs: acc.carbs + nutrition.carbs,
+                    fat: acc.fat + nutrition.fat,
+                    sugar: acc.sugar + nutrition.sugar,
+                    fiber: acc.fiber + nutrition.fiber
+                };
+            }, { calories: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0 });
+
+            const toppingsNutrition = selectedToppings.reduce((acc, topping) => {
+                const nutrition = topping.nutrition;
+                return {
+                    calories: acc.calories + (nutrition.calories || 0),
+                    protein: acc.protein + (nutrition.protein || 0),
+                    carbs: acc.carbs + (nutrition.carbs || 0),
+                    fat: acc.fat + (nutrition.fat || 0),
+                    sugar: acc.sugar + (nutrition.sugar || 0),
+                    fiber: acc.fiber + (nutrition.fiber || 0)
+                };
+            }, { calories: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0 });
+            
+            const totalNutrition = {
+                calories: (baseNutrition.calories + toppingsNutrition.calories) * quantity,
+                protein: (baseNutrition.protein + toppingsNutrition.protein) * quantity,
+                carbs: (baseNutrition.carbs + toppingsNutrition.carbs) * quantity,
+                fat: (baseNutrition.fat + toppingsNutrition.fat) * quantity,
+                sugar: (baseNutrition.sugar + toppingsNutrition.sugar) * quantity,
+                fiber: (baseNutrition.fiber + toppingsNutrition.fiber) * quantity
+            };
+            
+            document.getElementById('nutrition-info').innerHTML = `
+                <div class="flex justify-between"><span>Calorías:</span><span class="font-semibold">${totalNutrition.calories}</span></div>
+                <div class="flex justify-between"><span>Proteínas:</span><span class="font-semibold">${totalNutrition.protein.toFixed(1)}g</span></div>
+                <div class="flex justify-between"><span>Carbohidratos:</span><span class="font-semibold">${totalNutrition.carbs.toFixed(1)}g</span></div>
+                <div class="flex justify-between"><span>Grasas:</span><span class="font-semibold">${totalNutrition.fat.toFixed(1)}g</span></div>
+                <div class="flex justify-between"><span>Azúcares:</span><span class="font-semibold">${totalNutrition.sugar.toFixed(1)}g</span></div>
+                <div class="flex justify-between"><span>Fibra:</span><span class="font-semibold">${totalNutrition.fiber.toFixed(1)}g</span></div>
+            `;
+        }
+
+        function addToCart() {
+            if (selectedFlavors.length === 0 || !selectedSize) return;
+            
+            // Precio fijo por tamaño
+            const sizePrices = { 
+                small: 4.50, 
+                medium: 8.50, 
+                large: 12.00, 
+                'half-liter': 35.00, 
+                'full-liter': 65.00 
+            };
+            
+            let basePrice;
+            if (selectedSize === 'half-liter' || selectedSize === 'full-liter') {
+                basePrice = sizePrices[selectedSize];
+            } else {
+                basePrice = sizePrices[selectedSize] * selectedScoops;
+            }
+            
+            const toppingsPrice = selectedToppings.reduce((sum, topping) => sum + topping.price, 0);
+            const totalPrice = (basePrice + toppingsPrice) * quantity;
+            
+            const cartItem = {
+                id: `cart-${Date.now()}`,
+                scoops: selectedScoops,
+                flavors: [...selectedFlavors],
+                size: selectedSize,
+                toppings: [...selectedToppings],
+                quantity: quantity,
+                totalPrice: totalPrice,
+                bringOwnSpoon: bringOwnSpoon,
+                donationAmount: bringOwnSpoon ? (totalPrice * 0.35) : 0
+            };
+            
+            cart.push(cartItem);
+            updateCartDisplay();
+            
+            // Reset builder
+            selectedScoops = 0;
+            selectedFlavors = [];
+            selectedSize = '';
+            selectedToppings = [];
+            quantity = 1;
+            bringOwnSpoon = false;
+            document.getElementById('bring-own-spoon').checked = false;
+            
+            // Hide all sections except first
+            document.getElementById('flavors-selection').classList.add('hidden');
+            document.getElementById('size-selection').classList.add('hidden');
+            document.getElementById('toppings-selection').classList.add('hidden');
+            document.getElementById('checkout-section').classList.add('hidden');
+            document.getElementById('initial-state').classList.remove('hidden');
+            
+            // Reload scoops
+            loadScoops();
+            
+            // Show success message
+            showSuccessMessage();
+        }
+
+        function showSuccessMessage() {
+            // Create and show a nice success message
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-4 rounded-2xl shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            message.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">🎉</span>
+                    <div>
+                        <div class="font-semibold">¡Helado agregado!</div>
+                        <div class="text-sm opacity-90">Revisa tu carrito</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => message.classList.remove('translate-x-full'), 100);
+            setTimeout(() => {
+                message.classList.add('translate-x-full');
+                setTimeout(() => document.body.removeChild(message), 300);
+            }, 3000);
+        }
+
+        function updateCartDisplay() {
+            const container = document.getElementById('cart-container');
+            const count = document.getElementById('cart-count');
+            
+            count.textContent = cart.length;
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🛒</div>
+                        <h3 class="text-xl font-semibold text-elegant mb-2">Tu carrito está vacío</h3>
+                        <p class="text-gray-500">¡Crea tu helado perfecto y aparecerá aquí!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            const totalDonations = cart.reduce((sum, item) => sum + (item.donationAmount || 0), 0);
+            const sizeNames = { 
+                small: 'Vasito', 
+                medium: 'Vaso', 
+                large: 'Vaso Grande',
+                'half-liter': 'Medio Litro',
+                'full-liter': 'Un Litro'
+            };
+            
+            container.innerHTML = `
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-elegant">Mi Carrito (${cart.length})</h3>
+                    <button onclick="clearCart()" class="text-red-600 hover:text-red-700 text-sm font-medium">Limpiar</button>
+                </div>
+                <div class="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                    ${cart.map((item, index) => `
+                        <div class="bg-gradient-to-r from-cream/30 to-white rounded-xl p-4 border border-gray-100">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-3">
+                                    ${
+                                        item.flavors[0].image.includes('.jpg')
+                                            ? `<img src="${item.flavors[0].image}" alt="${item.flavors[0].name}" class="w-12 h-12 object-cover rounded-lg shadow-sm" />`
+                                            : `<div class="text-2xl">${item.flavors[0].image}</div>`
+                                    }
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-elegant text-sm">
+                                            ${item.flavors.length > 1 ? `${item.flavors.length} sabores` : item.flavors[0].name}
+                                        </h4>
+                                        <div class="text-xs text-gray-600 mt-1">
+                                            <div><strong>Tamaño:</strong> ${sizeNames[item.size]}</div>
+                                            ${item.flavors.length > 1 ? `<div><strong>Sabores:</strong> ${item.flavors.map(f => f.name).join(', ')}</div>` : ''}
+                                            ${item.toppings.length > 0 ? `<div><strong>Extras:</strong> ${item.toppings.map(t => t.name).join(', ')}</div>` : ''}
+                                            ${item.bringOwnSpoon ? `<div class="text-blue-600"><strong>🌍 Cuchara propia:</strong> Donación S/ ${item.donationAmount.toFixed(2)} al WFP</div>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 text-lg">🗑️</button>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="font-medium">Cantidad: ${item.quantity}</span>
+                                <span class="font-bold text-elegant">S/ ${item.totalPrice.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="border-t border-gray-200 pt-4">
+                    ${totalDonations > 0 ? `
+                        <div class="bg-blue-50 p-3 rounded-lg mb-4 border border-blue-200">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-blue-800 font-medium">🌍 Total donación al WFP:</span>
+                                <span class="text-blue-800 font-bold">S/ ${totalDonations.toFixed(2)}</span>
+                            </div>
+                            <p class="text-xs text-blue-600 mt-1 text-center">¡Gracias por ayudar a alimentar personas necesitadas!</p>
+                        </div>
+                    ` : ''}
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-lg font-semibold text-elegant">Total:</span>
+                        <span class="text-2xl font-bold text-elegant">S/ ${total.toFixed(2)}</span>
+                    </div>
+                    <button onclick="proceedToPayment()" class="w-full bg-gradient-to-r from-strawberry to-blueberry hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                        💳 Proceder al pago
+                    </button>
+                    <div class="mt-4 text-center">
+                        <p class="text-xs text-gray-500">🚚 Delivery disponible • 📱 Yape, Plin, Tarjetas • 🌱 Envases 100% biodegradables</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartDisplay();
+        }
+
+        function proceedToPayment() {
+            showInstagramOrderForm();
+        }
+        
+        function showInstagramOrderForm() {
+            // Crear modal con formulario para datos del cliente
+            const modal = document.createElement('div');
+            modal.id = 'instagram-order-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            const totalDonations = cart.reduce((sum, item) => sum + (item.donationAmount || 0), 0);
+            
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="bg-gradient-to-r from-strawberry to-blueberry text-white p-6 rounded-t-2xl">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-3xl">📱</span>
+                                <div>
+                                    <h2 class="text-2xl font-bold">Hacer Pedido por Instagram</h2>
+                                    <p class="text-sm opacity-90">Completa tus datos para generar el mensaje</p>
+                                </div>
+                            </div>
+                            <button onclick="closeInstagramModal()" class="text-white hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- Resumen del pedido -->
+                        <div class="bg-gradient-to-br from-cream/50 to-yellow-50 rounded-xl p-4 mb-6 border border-cream">
+                            <h3 class="font-semibold text-elegant mb-3 flex items-center space-x-2">
+                                <span>🍦</span>
+                                <span>Resumen de tu pedido:</span>
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                ${cart.map(item => {
+                                    const sizeNames = { small: 'Vasito', medium: 'Vaso', large: 'Vaso Grande', 'half-liter': 'Medio Litro', 'full-liter': 'Un Litro' };
+                                    return `
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <strong>${item.quantity}x</strong> ${item.flavors.length > 1 ? item.flavors.length + ' sabores' : item.flavors[0].name} 
+                                                (${sizeNames[item.size]})
+                                                ${item.toppings.length > 0 ? '<br><span class="text-xs text-gray-600">+ ' + item.toppings.map(t => t.name).join(', ') + '</span>' : ''}
+                                                ${item.bringOwnSpoon ? '<br><span class="text-xs text-blue-600">🌍 Con cuchara propia (donación S/ ' + item.donationAmount.toFixed(2) + ')</span>' : ''}
+                                            </div>
+                                            <strong class="text-elegant">S/ ${item.totalPrice.toFixed(2)}</strong>
+                                        </div>
+                                    `;
+                                }).join('')}
+                                <div class="border-t border-gray-200 pt-2 mt-3">
+                                    <div class="flex justify-between items-center font-bold text-lg">
+                                        <span>Total:</span>
+                                        <span class="text-elegant">S/ ${total.toFixed(2)}</span>
+                                    </div>
+                                    ${totalDonations > 0 ? `
+                                        <div class="flex justify-between items-center text-sm text-blue-600 mt-1">
+                                            <span>🌍 Total donación WFP:</span>
+                                            <span>S/ ${totalDonations.toFixed(2)}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Formulario de datos del cliente -->
+                        <form id="customer-form" class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-elegant mb-1">Nombre *</label>
+                                    <input type="text" id="customer-name" required 
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-strawberry focus:border-transparent"
+                                           placeholder="Tu nombre">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-elegant mb-1">Apellido *</label>
+                                    <input type="text" id="customer-lastname" required 
+                                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-strawberry focus:border-transparent"
+                                           placeholder="Tu apellido">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-elegant mb-1">¿Para cuándo necesitas el pedido? *</label>
+                                <input type="datetime-local" id="delivery-date" required 
+                                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-strawberry focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-elegant mb-1">¿Quieres colaborar con la donación?</label>
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <input type="checkbox" id="wants-donation" class="w-4 h-4 text-strawberry">
+                                        <label for="wants-donation" class="text-sm font-medium text-blue-800">
+                                            🌍 Sí, quiero traer mi propia cuchara eco-friendly y donar al WFP
+                                        </label>
+                                    </div>
+                                    <p class="text-xs text-blue-600">
+                                        Al traer tu cuchara de metal/madera/bambú, donaremos el 35% de tu pedido al World Food Programme para combatir el hambre mundial.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-elegant mb-1">Comentarios adicionales (opcional)</label>
+                                <textarea id="customer-comments" rows="3" 
+                                          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-strawberry focus:border-transparent"
+                                          placeholder="Alguna especificación especial, dirección de entrega, etc."></textarea>
+                            </div>
+                        </form>
+                        
+                        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                            <button onclick="closeInstagramModal()" 
+                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 px-6 rounded-xl transition-colors">
+                                Cancelar
+                            </button>
+                            <button onclick="generateInstagramMessage()" 
+                                    class="flex-1 bg-gradient-to-r from-strawberry to-blueberry hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl">
+                                📱 Enviar a Instagram
+                            </button>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <p class="text-xs text-gray-500">
+                                Se abrirá Instagram con el mensaje pre-escrito listo para enviar a @_creamchoice
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Establecer fecha mínima (hoy) y fecha por defecto (mañana)
+            const now = new Date();
+            const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+            const dateInput = document.getElementById('delivery-date');
+            dateInput.min = now.toISOString().slice(0, 16);
+            dateInput.value = tomorrow.toISOString().slice(0, 16);
+        }
+        
+        function closeInstagramModal() {
+            const modal = document.getElementById('instagram-order-modal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        function generateInstagramMessage() {
+            // Validar formulario
+            const name = document.getElementById('customer-name').value.trim();
+            const lastname = document.getElementById('customer-lastname').value.trim();
+            const deliveryDate = document.getElementById('delivery-date').value;
+            const wantsDonation = document.getElementById('wants-donation').checked;
+            const comments = document.getElementById('customer-comments').value.trim();
+            
+            if (!name || !lastname || !deliveryDate) {
+                alert('Por favor completa todos los campos obligatorios (nombre, apellido y fecha)');
+                return;
+            }
+            
+            // Generar mensaje estructurado
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            const sizeNames = { 
+                small: 'Vasito (1 bola)', 
+                medium: 'Vaso (2 bolas)', 
+                large: 'Vaso Grande (3 bolas)',
+                'half-liter': 'Medio Litro',
+                'full-liter': 'Un Litro'
+            };
+            
+            let message = `¡Hola! Quiero hacer un pedido de Cream Choice 🍦\n\n`;
+            message += `👤 DATOS DEL CLIENTE:\n`;
+            message += `• Nombre: ${name} ${lastname}\n`;
+            message += `• Para cuándo: ${formatDate(deliveryDate)}\n\n`;
+            
+            message += `🍨 DETALLES DEL PEDIDO:\n`;
+            cart.forEach((item, index) => {
+                message += `\n${index + 1}. ${item.quantity}x ${sizeNames[item.size]}\n`;
+                
+                if (item.flavors.length === 1) {
+                    message += `   Sabor: ${item.flavors[0].name}\n`;
+                } else {
+                    message += `   Sabores: ${item.flavors.map(f => f.name).join(', ')}\n`;
+                }
+                
+                if (item.toppings.length > 0) {
+                    message += `   Toppings: ${item.toppings.map(t => t.name).join(', ')}\n`;
+                }
+                
+                if (item.bringOwnSpoon) {
+                    message += `   🌍 Con cuchara propia (donación S/ ${item.donationAmount.toFixed(2)} al WFP)\n`;
+                }
+                
+                message += `   Subtotal: S/ ${item.totalPrice.toFixed(2)}\n`;
+            });
+            
+            message += `\n💰 TOTAL A PAGAR: S/ ${total.toFixed(2)}\n`;
+            
+            if (wantsDonation) {
+                const totalDonationIfWanted = total * 0.35;
+                message += `\n🌍 DONACIÓN:\n`;
+                message += `Sí quiero traer mi cuchara eco-friendly y donar S/ ${totalDonationIfWanted.toFixed(2)} al World Food Programme\n`;
+                message += `(Cuchara de metal/madera/bambú - NO plástico)\n`;
+            }
+            
+            if (comments) {
+                message += `\n💬 COMENTARIOS:\n${comments}\n`;
+            }
+            
+            message += `\n¡Gracias! 😊`;
+            
+            // Abrir Instagram con el mensaje
+            const encodedMessage = encodeURIComponent(message);
+            const instagramUrl = `https://instagram.com/direct/new/?text=${encodedMessage}`;
+            
+            // Intentar abrir la app de Instagram primero, luego web como fallback
+            const mobileUrl = `instagram://user?username=_creamchoice&text=${encodedMessage}`;
+            
+            // Mostrar mensaje de confirmación y abrir Instagram
+            alert('🎉 ¡Pedido listo! Te redirigiremos a Instagram para enviar el mensaje a @_creamchoice');
+            
+            // Abrir Instagram (intenta app móvil primero, luego web)
+            if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // En móvil, intenta abrir la app
+                window.location.href = mobileUrl;
+                
+                // Fallback a web después de 1 segundo
+                setTimeout(() => {
+                    window.open(instagramUrl, '_blank');
+                }, 1000);
+            } else {
+                // En escritorio, abre Instagram web
+                window.open(instagramUrl, '_blank');
+            }
+            
+            // REGISTRAR VENTA EN EL SISTEMA DE ANALÍTICAS
+            registerSaleForAnalytics(name, lastname, deliveryDate, wantsDonation, comments);
+            
+            // Cerrar modal y limpiar carrito
+            closeInstagramModal();
+            clearCart();
+            
+            // Mostrar mensaje de éxito
+            showOrderSuccessMessage();
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                timeZone: 'America/Lima'
+            };
+            return date.toLocaleDateString('es-PE', options);
+        }
+        
+        function showOrderSuccessMessage() {
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-4 rounded-2xl shadow-lg z-50 transform translate-x-full transition-transform duration-300 max-w-sm';
+            message.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">🎉</span>
+                    <div>
+                        <div class="font-semibold">¡Pedido enviado!</div>
+                        <div class="text-sm opacity-90">Revisa Instagram para confirmar el envío</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => message.classList.remove('translate-x-full'), 100);
+            setTimeout(() => {
+                message.classList.add('translate-x-full');
+                setTimeout(() => document.body.removeChild(message), 300);
+            }, 5000);
+        }
+        
+        function registerSaleForAnalytics(customerName, customerLastname, deliveryDate, wantsDonation, comments) {
+            // Obtener ventas existentes
+            let salesHistory = JSON.parse(localStorage.getItem('creamChoiceSales')) || [];
+            
+            const now = new Date();
+            const fecha = now.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const hora = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            const sizeNames = { 
+                small: 'Vasito (1 bola)', 
+                medium: 'Vaso (2 bolas)', 
+                large: 'Vaso Grande (3 bolas)',
+                'half-liter': 'Medio Litro',
+                'full-liter': 'Un Litro'
+            };
+            
+            // Calcular donaciones totales (de los items + donación adicional si aplica)
+            let totalDonations = cart.reduce((sum, item) => sum + (item.donationAmount || 0), 0);
+            if (wantsDonation) {
+                totalDonations += total * 0.35; // Donación adicional del 35%
+            }
+            
+            // Crear registro de venta
+            const saleRecord = {
+                id: `sale-${Date.now()}`,
+                fecha: fecha,
+                hora: hora,
+                cliente: {
+                    nombre: customerName,
+                    apellido: customerLastname,
+                    fecha_entrega: deliveryDate,
+                    comentarios: comments || 'Sin comentarios'
+                },
+                productos: cart.map(item => ({
+                    sabores: item.flavors.length === 1 ? item.flavors[0].name : item.flavors.map(f => f.name).join(', '),
+                    tamaño: sizeNames[item.size],
+                    cantidad: item.quantity,
+                    precio_unitario: item.totalPrice / item.quantity,
+                    precio_total: item.totalPrice,
+                    toppings: item.toppings.length > 0 ? item.toppings.map(t => t.name).join(', ') : 'Sin toppings',
+                    cuchara_propia: item.bringOwnSpoon ? 'Sí' : 'No',
+                    donacion_wfp: item.donationAmount || 0
+                })),
+                total_venta: total,
+                total_donaciones: totalDonations,
+                metodo_pago: 'Instagram - Pendiente',
+                estado: 'Enviado por Instagram',
+                donacion_adicional: wantsDonation ? total * 0.35 : 0,
+                notas_especiales: {
+                    envio_instagram: true,
+                    fecha_pedido: now.toISOString(),
+                    donacion_extra_solicitada: wantsDonation
+                }
+            };
+            
+            // Agregar a la lista de ventas
+            salesHistory.push(saleRecord);
+            
+            // Guardar en localStorage
+            localStorage.setItem('creamChoiceSales', JSON.stringify(salesHistory));
+            
+            console.log('Venta registrada en el sistema de analíticas:', saleRecord);
+        }
+
+
+        function toggleCart() {
+            // En mobile, scroll to cart
+            document.getElementById('cart-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Chat Bot Inteligente - Base de conocimiento de Cream Choice
+        let chatOpen = false;
+        
+        const creamChoiceKnowledge = {
+            // Información básica del emprendimiento
+            empresa: {
+                nombre: 'Cream Choice',
+                subtitulo: 'Traditional',
+                concepto: 'Helados artesanales a base de yogurt griego',
+                mision: 'Crear helados saludables, conservables y deliciosos que sean accesibles para toda la familia, sin ingredientes artificiales y con precios justos',
+                vision: 'Ser la heladería favorita de Lima, demostrando que lo saludable también puede ser súper rico y divertido',
+                valores: ['Yogurt griego de calidad', 'Frutas naturales frescas', 'Utensilios biodegradables', 'Precios justos', 'Servicio con amor'],
+                instagram: '@_creamchoice',
+                ubicacion: 'Emprendimiento digital, próximamente local físico',
+                delivery: true,
+                ecologico: 'Vasos y cucharadas 100% biodegradables incluidos sin costo extra',
+                programa_donacion: {
+                    nombre: 'Programa "Trae tu Cuchara"',
+                    descripcion: 'Si traes tu propia cuchara eco-friendly, donamos el 35% del costo de tu helado al World Food Programme',
+                    porcentaje_donacion: '35%',
+                    beneficiario: 'World Food Programme (WFP)',
+                    cucharas_aceptadas: ['metal', 'madera', 'bambú', 'cerámica', 'acero inoxidable'],
+                    cucharas_no_aceptadas: ['plástico', 'material desechable'],
+                    beneficios: [
+                        'No recibes cuchara biodegradable (vaso sí incluido)',
+                        '35% del costo va a combatir el hambre mundial',
+                        'Reduces el uso de utensilios desechables',
+                        'Tienes un impacto social positivo'
+                    ],
+                    requisito: 'Traer cuchara eco-friendly: metal, madera, bambú o cerámica. NO plástico',
+                    link_wfp: 'https://www.wfp.org/support-us'
+                }
+            },
+            
+            // Productos
+            sabores: {
+                fresa: {
+                    nombre: 'Fresa Natural',
+                    descripcion: 'Cremoso yogurt griego con trozos de fresa fresca',
+                    caracteristicas: 'Frutal, natural, con trozos reales de fresa, sin colorantes artificiales',
+                    recomendado_para: 'Amantes de sabores naturales y frutales'
+                },
+                chocolate: {
+                    nombre: 'Chocolate Artesanal',
+                    descripcion: 'Yogurt griego con cacao orgánico y toques de chocolate',
+                    caracteristicas: 'Rico, cremoso, con cacao orgánico de alta calidad',
+                    recomendado_para: 'Amantes del chocolate que buscan calidad'
+                },
+                maracuya: {
+                    nombre: 'Maracuyá Tropical',
+                    descripcion: 'Yogurt griego con pulpa de maracuyá fresca y natural',
+                    caracteristicas: 'Exótico, tropical, sabor intenso y refrescante',
+                    recomendado_para: 'Quienes buscan sabores exóticos y tropicales'
+                },
+                lucuma: {
+                    nombre: 'Lúcuma Tradicional',
+                    descripcion: 'Yogurt griego con lúcuma peruana, sabor único y tradicional',
+                    caracteristicas: 'Tradicional peruano, cremoso, dulce natural, el oro de los incas',
+                    recomendado_para: 'Amantes de sabores tradicionales peruanos'
+                },
+                arandano: {
+                    nombre: 'Arándano Antioxidante',
+                    descripcion: 'Yogurt griego con arándanos frescos, rico en antioxidantes',
+                    caracteristicas: 'Saludable, antioxidante, suave, nutritivo',
+                    recomendado_para: 'Personas que buscan opciones saludables y antioxidantes'
+                }
+            },
+            
+            // Precios y tamaños
+            precios: {
+                vasito: { precio: 4.50, descripcion: 'Perfecto para una merienda (1 bola)', emoji: '🥄' },
+                vaso: { precio: 8.50, descripcion: 'El tamaño ideal (2 bolas)', emoji: '🥤' },
+                vaso_grande: { precio: 12.00, descripcion: 'Para compartir o disfrutar mucho (3 bolas)', emoji: '🥣' },
+                medio_litro: { precio: 35.00, descripcion: 'Para llevar a casa, hasta 3 sabores', emoji: '🍨' },
+                litro_completo: { precio: 65.00, descripcion: 'Para toda la familia, hasta 5 sabores', emoji: '🎂' },
+                nota: 'Todos los precios incluyen vaso y cucharada biodegradables gratis. Precios basados en costos reales de ingredientes premium'
+            },
+            
+            // Toppings
+            toppings: {
+                frutas: {
+                    fresa: { nombre: 'Fresa en trozos', precio: 1.50, descripcion: 'Trozos frescos de fresa natural' },
+                    arandanos: { nombre: 'Arándanos frescos', precio: 2.00, descripcion: 'Arándanos frescos ricos en antioxidantes' }
+                },
+                frutos_secos: {
+                    almendras: { nombre: 'Almendras picadas', precio: 2.50, descripcion: 'Almendras naturales picadas, fuente de proteína' }
+                },
+                dulces: {
+                    chocolate: { nombre: 'Chispas de chocolate', precio: 1.00, descripcion: 'Chispas de chocolate de calidad' }
+                },
+                saludables: {
+                    granola: { nombre: 'Granola artesanal', precio: 1.75, descripcion: 'Granola casera crujiente y nutritiva' },
+                    miel: { nombre: 'Miel de abeja', precio: 1.50, descripcion: 'Miel natural de abeja, endulzante natural' },
+                    chia: { nombre: 'Semillas de chía', precio: 2.00, descripcion: 'Semillas de chía, superalimento rico en omega-3' }
+                }
+            },
+            
+            // Pagos y entrega
+            pagos: {
+                metodos: ['Yape', 'Plin', 'Tarjetas de crédito/débito', 'Efectivo contra entrega'],
+                delivery: 'Disponible',
+                envio_gratis: 'En pedidos mayores a S/15'
+            },
+            
+            // Beneficios del yogurt griego
+            yogurt_griego: {
+                beneficios: ['Menos azúcar que helados tradicionales', 'Más proteína', 'Probioticos naturales', 'Textura más cremosa', 'Ingredientes naturales'],
+                diferencia: 'Base de yogurt griego en lugar de crema tradicional, más saludable y nutritivo'
+            }
+        };
+        
+        function toggleChat() {
+            const chatWindow = document.getElementById('chat-window');
+            const chatToggle = document.getElementById('chat-toggle');
+            
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                chatWindow.style.display = 'flex';
+                chatToggle.style.transform = 'scale(0.9)';
+                document.getElementById('chat-input').focus();
+            } else {
+                chatWindow.style.display = 'none';
+                chatToggle.style.transform = 'scale(1)';
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Mostrar indicador de escritura
+            showTyping();
+            
+            // Simular tiempo de respuesta
+            setTimeout(() => {
+                hideTyping();
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 1000 + Math.random() * 1000);
+        }
+        
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            typingIndicator.style.display = 'flex';
+            
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            typingIndicator.style.display = 'none';
+        }
+        
+        function getBotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            const kb = creamChoiceKnowledge;
+            
+            // Sistema de IA que analiza la pregunta y busca la mejor respuesta
+            
+            // 1. Saludos
+            if (message.match(/(hola|hi|buenos días|buenas tardes|buenas noches)/)) {
+                return '¡Hola! Soy el asistente de Cream Choice. ¿En qué puedo ayudarte con nuestros helados de yogurt griego?';
+            }
+            
+            // 2. Preguntas sobre sabores específicos
+            if (message.includes('fresa')) {
+                return `${kb.sabores.fresa.nombre}: ${kb.sabores.fresa.caracteristicas}. ${kb.sabores.fresa.recomendado_para}.`;
+            }
+            if (message.includes('chocolate')) {
+                return `${kb.sabores.chocolate.nombre}: ${kb.sabores.chocolate.caracteristicas}. ${kb.sabores.chocolate.recomendado_para}.`;
+            }
+            if (message.includes('maracuya') || message.includes('maracuyá')) {
+                return `${kb.sabores.maracuya.nombre}: ${kb.sabores.maracuya.caracteristicas}. ${kb.sabores.maracuya.recomendado_para}.`;
+            }
+            if (message.includes('lucuma') || message.includes('lúcuma')) {
+                return `${kb.sabores.lucuma.nombre}: ${kb.sabores.lucuma.caracteristicas}. ${kb.sabores.lucuma.recomendado_para}.`;
+            }
+            if (message.includes('arandano') || message.includes('arándano')) {
+                return `${kb.sabores.arandano.nombre}: ${kb.sabores.arandano.caracteristicas}. ${kb.sabores.arandano.recomendado_para}.`;
+            }
+            
+            // 3. Lista de sabores
+            if (message.match(/(sabores|que tienen|cuales son)/)) {
+                return `Tenemos 5 sabores: Fresa Natural (frutal con trozos reales), Chocolate Artesanal (con cacao orgánico), Maracuyá Tropical (exótico e intenso), Lúcuma Tradicional (peruano tradicional), y Arándano Antioxidante (saludable). Todos con ${kb.empresa.concepto}.`;
+            }
+            
+            // 4. Precios
+            if (message.match(/(precio|cuanto cuesta|costo)/)) {
+                return `Nuestros precios: ${kb.precios.vasito.emoji} Vasito S/${kb.precios.vasito.precio} (${kb.precios.vasito.descripcion}), ${kb.precios.vaso.emoji} Vaso S/${kb.precios.vaso.precio} (${kb.precios.vaso.descripcion}), ${kb.precios.vaso_grande.emoji} Vaso Grande S/${kb.precios.vaso_grande.precio} (${kb.precios.vaso_grande.descripcion}). ${kb.precios.nota}.`;
+            }
+            
+            // 5. Toppings
+            if (message.match(/(topping|extra|agregado)/)) {
+                const toppings = [];
+                Object.values(kb.toppings).forEach(categoria => {
+                    Object.values(categoria).forEach(topping => {
+                        toppings.push(`${topping.nombre} (S/${topping.precio})`);
+                    });
+                });
+                return `Nuestros toppings: ${toppings.join(', ')}. Puedes combinar los que quieras!`;
+            }
+            
+            // 6. Recomendaciones
+            if (message.match(/(recomend|suger|que me das|cual es bueno)/)) {
+                return `Te recomiendo: Lúcuma con granola artesanal (sabor peruano tradicional), Fresa con trozos de fresa (súper frutal), o Arándano con miel (saludable y delicioso). ¿Tienes alguna preferencia? ¿Dulce, frutal, saludable?`;
+            }
+            
+            // 7. Sobre la empresa
+            if (message.match(/(empresa|negocio|emprendimiento|quienes son)/)) {
+                return `${kb.empresa.nombre} ${kb.empresa.subtitulo} es ${kb.empresa.concepto}. ${kb.empresa.mision}. Nuestra visión: ${kb.empresa.vision}. Síguenos en ${kb.empresa.instagram}!`;
+            }
+            
+            // 8. Yogurt griego y salud
+            if (message.match(/(saludable|diet|yogurt|griego|calorias|nutritivo)/)) {
+                return `Nuestros helados son a base de yogurt griego, por eso son más saludables: ${kb.yogurt_griego.beneficios.join(', ')}. ${kb.yogurt_griego.diferencia}.`;
+            }
+            
+            // 9. Delivery y ubicación
+            if (message.match(/(delivery|envio|donde|ubicacion|local)/)) {
+                return `${kb.empresa.ubicacion}. Sí hacemos ${kb.pagos.delivery.toLowerCase()}! ${kb.pagos.envio_gratis}. Puedes pedir desde esta página web.`;
+            }
+            
+            // 10. Pagos
+            if (message.match(/(pago|yape|plin|tarjeta|efectivo|como pagar)/)) {
+                return `Aceptamos: ${kb.pagos.metodos.join(', ')}. ${kb.pagos.envio_gratis}.`;
+            }
+            
+            // 11. Ecológico
+            if (message.match(/(ecologic|medio ambiente|biodegradable|planeta)/)) {
+                return `Somos eco-friendly! ${kb.empresa.ecologico}. Cuidamos el planeta con cada helado que entregas.`;
+            }
+            
+            // 12. Instagram
+            if (message.match(/(instagram|redes|fotos)/)) {
+                return `Síguenos en ${kb.empresa.instagram} para ver fotos deliciosas de nuestros helados y novedades!`;
+            }
+            
+            // 13. Cómo pedir
+            if (message.match(/(como pedir|pasos|proceso)/)) {
+                return 'Es fácil: 1) Elige cuántas bolas quieres, 2) Selecciona sabores, 3) Elige tamaño, 4) Añade toppings (opcional), 5) Al carrito y listo!';
+            }
+            
+            // 14. Programa de donación "Trae tu Cuchara"
+            if (message.match(/(donacion|donar|cuchara|world food|wfp|ayuda|caridad|social)/)) {
+                return `¡Sí! Tenemos el ${kb.empresa.programa_donacion.nombre}. ${kb.empresa.programa_donacion.descripcion}. IMPORTANTE: Solo aceptamos cucharas de ${kb.empresa.programa_donacion.cucharas_aceptadas.join(', ')}. NO ${kb.empresa.programa_donacion.cucharas_no_aceptadas.join(' ni ')}. ¡Tu helado puede alimentar esperanzas alrededor del mundo!`;
+            }
+            
+            // 15. Vegano/Lactosa
+            if (message.match(/(vegan|lactosa|sin lacteos)/)) {
+                return 'Nuestros helados contienen lácteos (yogurt griego). No tenemos opciones veganas por ahora, pero estamos trabajando en ello.';
+            }
+            
+            // 15. Despedidas
+            if (message.match(/(gracias|chau|adios|hasta luego)/)) {
+                return '¡De nada! Fue un placer ayudarte. ¡Disfruta tu helado de Cream Choice!';
+            }
+            
+            // 16. Respuesta inteligente por defecto
+            return `Interesante pregunta sobre Cream Choice! Te puedo ayudar con: sabores (${Object.keys(kb.sabores).join(', ')}), precios, toppings, recomendaciones, delivery, pagos o cualquier otra duda. ¿Sobre qué te gustaría saber más?`;
+        }
+
+        // Funciones de reconocimiento de voz
+        let isRecording = false;
+        let recognition = null;
+        
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'es-ES';
+            
+            recognition.onstart = function() {
+                console.log('Reconocimiento de voz iniciado');
+            };
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('chat-input').value = transcript;
+                console.log('Transcripción:', transcript);
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Error en reconocimiento de voz:', event.error);
+                stopRecording();
+            };
+            
+            recognition.onend = function() {
+                stopRecording();
+            };
+        }
+        
+        function toggleVoice() {
+            if (!recognition) {
+                alert('¡Lo siento! Tu navegador no soporta reconocimiento de voz. Prueba con Chrome.');
+                return;
+            }
+            
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+        
+        function startRecording() {
+            if (recognition) {
+                isRecording = true;
+                const voiceBtn = document.getElementById('voiceBtn');
+                voiceBtn.classList.add('recording');
+                voiceBtn.innerHTML = '🎤 Escuchando...';
+                recognition.start();
+            }
+        }
+        
+        function stopRecording() {
+            if (recognition) {
+                isRecording = false;
+                const voiceBtn = document.getElementById('voiceBtn');
+                voiceBtn.classList.remove('recording');
+                voiceBtn.innerHTML = '🎤';
+                recognition.stop();
+            }
+        }
+        
+        // Función para enviar mensajes de opciones rápidas
+        function sendQuickMessage(message) {
+            document.getElementById('chat-input').value = message;
+            sendMessage();
+        }
+        
+        // Actualizar función handleChatKeypress para reconocer Enter
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Función para manejar la opción de cuchara propia
+        function toggleOwnSpoon() {
+            bringOwnSpoon = document.getElementById('bring-own-spoon').checked;
+            updateTotal();
+            updateDonationMessage();
+        }
+        
+        function updateDonationMessage() {
+            const total = calculateBaseTotal();
+            const donationAmount = bringOwnSpoon ? (total * 0.35) : 0;
+            
+            // Mostrar mensaje de donación si está activo
+            let donationDiv = document.getElementById('donation-message');
+            if (!donationDiv) {
+                donationDiv = document.createElement('div');
+                donationDiv.id = 'donation-message';
+                document.getElementById('checkout-section').appendChild(donationDiv);
+            }
+            
+            if (bringOwnSpoon && donationAmount > 0) {
+                donationDiv.innerHTML = `
+                    <div class="mt-4 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border border-blue-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🌍💙</div>
+                            <h4 class="font-bold text-blue-800 mb-2">¡Gracias por ayudar al mundo!</h4>
+                            <p class="text-sm text-blue-700 mb-2">
+                                Por traer tu propia cuchara, estarás donando <strong>S/ ${donationAmount.toFixed(2)}</strong> 
+                                al World Food Programme para alimentar personas necesitadas.
+                            </p>
+                            <p class="text-xs text-blue-600">
+                                🍽️ No incluiremos cuchara biodegradable (vaso sí) • 🌱 Cuidas el planeta • 💝 Ayudas a otros
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                donationDiv.innerHTML = '';
+            }
+        }
+        
+        // Funciones para el globo de consulta
+        function closeChatBubble() {
+            const bubble = document.getElementById('chat-bubble');
+            bubble.style.display = 'none';
+            // Guardar en localStorage que el usuario cerró el globo
+            localStorage.setItem('chatBubbleClosed', 'true');
+        }
+        
+        function openChatFromBubble() {
+            closeChatBubble();
+            toggleChat();
+        }
+        
+        function showChatBubble() {
+            const bubble = document.getElementById('chat-bubble');
+            const wasClosed = localStorage.getItem('chatBubbleClosed');
+            
+            // Solo mostrar si no ha sido cerrado previamente
+            if (!wasClosed) {
+                bubble.style.display = 'block';
+                
+                // Auto-ocultar después de 10 segundos si no interactúa
+                setTimeout(() => {
+                    if (bubble.style.display !== 'none') {
+                        bubble.style.opacity = '0.7';
+                    }
+                }, 10000);
+                
+                // Auto-cerrar después de 30 segundos
+                setTimeout(() => {
+                    if (bubble.style.display !== 'none') {
+                        closeChatBubble();
+                    }
+                }, 30000);
+            }
+        }
+        
+        // Inicializar aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            loadScoops();
+            updateCartDisplay();
+            
+            // Mostrar globo de consulta después de 3 segundos
+            setTimeout(showChatBubble, 3000);
+        });
+    </script>
+</body>
+</html>
